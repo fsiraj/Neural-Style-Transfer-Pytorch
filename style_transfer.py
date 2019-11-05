@@ -3,6 +3,7 @@ import time
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 import torch
 from torch import optim
@@ -203,14 +204,16 @@ def transfer_style(content, style, model,
         remaining = (elapsed/i)*(iterations-i)
         remaining_m, remaining_s = int(remaining//60), int(remaining%60)
 
-        print(f"Iteration: {i}, ",
-              f"Time Elapsed: {elapsed_m:2}m {elapsed_s:2}s, ",
-              f"Estimated Time Remaining: {remaining_m:2}m {remaining_s:2}s ",
-              f"Iterations/s = {i/elapsed:4.2f}", end="\r")
+        sys.stdout.write(
+            f"Iteration: {i}, "
+            f"Time Elapsed: {elapsed_m:2}m {elapsed_s:2}s, "
+            f"Estimated Time Remaining: {remaining_m:2}m {remaining_s:2}s "
+            f"Iterations/s = {i/elapsed:4.2f}\r"
+            )
 
         if i % report == 0:
             # Display iteration progress
-            print(f"Total Loss: {total_loss.item()}")
+            print(f"Total Loss: {total_loss.item():.1f}")
             plt.imshow(tensor_to_img(canvas))
             plt.show()
 
